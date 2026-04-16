@@ -1,20 +1,30 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const app = express()
 
 app.use(express.json());
 
+mongoose.connect("mongodb+srv://prathimadodda12_db_user:Hello143@cluster0.np2wg5u.mongodb.net/myapp")
+.then(() => console.log("MongoDB connected"))
+.catch((err) => console.log(err));
 
-let users = [];
+const userSchema = new mongoose.Schema({
+    name: String,
+    age: Number
+});
+
+const User = mongoose.model("User", userSchema);
 
 //Create Users
-app.post("/users", (req, res) => {
-    let user = req.body;
-    users.push(user);
-    res.send("User added");
+app.post("/users", async(req, res) => {
+    const user = new User(req.body);
+    await user.save();
+    res.send("User saved");
 });
 
 //Read Users
-app.get("/users", (req, res) => {
+app.get("/users", async(req, res) => {
+    const users = await User.find();
     res.json(users);
 });
 
@@ -26,12 +36,13 @@ app.put("/users/:id", (req, res) => {
 });
 
 //Delete Users
+/*
 app.delete("/users/:id", (req, res) => {
     let id = req.params.id;
     users = users.filter((_, index) => index != id);
     res.send("Users Deleted..!")
 });
-
+*/
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
 });
