@@ -4,7 +4,7 @@ const app = express()
 
 app.use(express.json());
 
-mongoose.connect("mongodb+srv://prathimadodda12_db_user:Hello143@cluster0.np2wg5u.mongodb.net/myapp")
+mongoose.connect("mongodb+srv://*****/myapp")
 .then(() => console.log("MongoDB connected"))
 .catch((err) => console.log(err));
 
